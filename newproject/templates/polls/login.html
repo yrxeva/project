@@ -1,0 +1,85 @@
+{# 继承 #}
+{% extends 'polls/base.html' %}
+{% block title %}
+  登录
+{% endblock %}
+{% block link %}
+  <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">登录</a></li>
+    <li role="presentation"><a href="#register" aria-controls="register" role="tab" data-toggle="tab">注册</a></li>
+
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="login">
+
+        <form class="form-horizontal" action="{% url 'polls:login' %}" method="post">
+        {% csrf_token %}
+          <div class="form-group">
+            <label for="username" class="col-sm-2 control-label">登录</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="username" id="username" placeholder="输入账号">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" name="password" id="inputPassword3" placeholder="输入密码">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10" align="center">
+              <button type="submit" class="btn btn-default" >登录</button>
+            </div>
+          </div>
+        </form>
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="register">
+
+        <form class="form-horizontal" action="{% url 'polls:register' %}" method="post">
+          <div class="form-group">
+            <label for="username" class="col-sm-2 control-label">注册</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="username_reg" id="username_reg" placeholder="输入账号">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword3_reg" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" name="inputPassword3_reg" id="inputPassword3_reg" placeholder="输入密码">
+            </div>
+          </div>
+            <div class="form-group">
+            <label for="inputPassword3_reg2" class="col-sm-2 control-label">再次输入密码</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" name="inputPassword3_reg2" id="inputPassword3_reg2" placeholder="再次输入密码">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10" align="center">
+              <button type="submit" class="btn btn-default" >注册</button>
+            </div>
+          </div>
+        </form>
+
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+

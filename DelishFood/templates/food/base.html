@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/static/css/font-awesome.css" rel="stylesheet">
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--web-fonts-->
+<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Tangerine:400,700" rel="stylesheet">
+<!--//web-fonts-->
+</head>
+<body>
+
+<div class="banner inner-bg-w3" id="home">
+	<!-- header -->
+	<!--表头，链接信息，邮箱，电话-->
+	<div class="banner-top">
+		<div class="social-bnr-agileits">
+			<ul>
+				<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+				<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+				<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+				<li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+			</ul>
+		</div>
+		<div class="contact-bnr-w3-agile">
+				<ul>
+					<li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:info@example.com">info@gmail.com</a></li>
+					<li><i class="fa fa-phone" aria-hidden="true"></i>+1 (112)250-66-88</li>
+					<li>
+						<div class="search">
+							<input class="search_box" type="checkbox" id="search_box">
+							<label class="icon-search" for="search_box"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></label>
+							<div class="search_form">
+								<form action="#" method="post">
+									<input type="search" name="Search" placeholder="搜索待修复" required="" />
+									<input type="submit" value="搜索" />
+								</form>
+							</div>
+						</div>
+					</li>
+				</ul>
+		</div>
+			<div class="clearfix"></div>
+		</div>
+    <!--顶部栏-->
+    <header>
+     <div class="container">
+        <!-- navigation -->
+        <div class="w3_navigation">
+        <nav class="navbar navbar-default">
+            <div class="navbar-header navbar-left">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="w3_navigation_pos">
+                    <h1><span>DelishFood</span></h1>
+                </div>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+            <nav class="menu menu--miranda">
+                <ul class="nav navbar-nav menu__list">
+                <li class="menu__item"><a href="{% url 'food:index' %}" class="menu__link">首页</a></li>
+                <li class="menu__item"><a href="{% url 'food:show' %}" class=" menu__link">展示</a></li>
+                <li class="menu__item"><a href="{% url 'food:reserve' %}" class=" menu__link">预定</a></li>
+                <li class="dropdown menu__item"></li>
+                <li class="dropdown menu__item"></li>
+                <li class="menu__item" id="login"><a href="{% url 'food:register' %}" class=" menu__link">登录/注册</a></li>
+                <li class="menu__item"><a href="{% url 'food:about' %}" class=" menu__link">关于</a></li>
+                <li class="menu__item"><a href="{% url 'food:logout' %}">
+                    {% block log %}
+                    {{ state }}
+                    {% endblock %}
+
+                </a></li>
+
+                </ul>
+            </nav>
+            </div>
+        </nav>
+	</div>
+	<div class="clearfix"></div>
+     <!-- //navigation -->
+     </div>
+    </header>
+	<!-- //header -->
+    {% block up %}
+    {% endblock %}
+</div>
+
+{% block down %}
+{% endblock %}
+
+<!-- //smooth scrolling -->
+<script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/static/js/numscroller-1.0.js"></script>
+<script src="/static/js/particles.js"></script>
+<script src="/static/js/app.js"></script>
+
+<!-- //Footer -->
+<div class="copyright-wthree">
+	<p>Copyright &copy; 2019.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+</div>
+<!-- //Footer -->
+<a href="#home" class="scroll" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+<!-- Dropdown-Menu-JavaScript -->
+<script>
+			$(document).ready(function(){
+				$(".dropdown").hover(
+					function() {
+						$('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+						$(this).toggleClass('open');
+					},
+					function() {
+						$('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+						$(this).toggleClass('open');
+					}
+				);
+			});
+		</script>
+<!-- //Dropdown-Menu-JavaScript -->
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="/static/js/move-top.js"></script>
+<script type="text/javascript" src="/static/js/easing.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$(".scroll").click(function(event){
+		event.preventDefault();
+		$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+	});
+});
+</script>
+<!-- start-smoth-scrolling -->
+<!-- here stars scrolling icon -->
+<script type="text/javascript">
+$(document).ready(function() {
+	/*
+		var defaults = {
+		containerID: 'toTop', // fading element id
+		containerHoverID: 'toTopHover', // fading element hover id
+		scrollSpeed: 1200,
+		easingType: 'linear'
+		};
+	*/
+
+	$().UItoTop({ easingType: 'easeOutQuart' });
+
+	});
+</script>
+<!-- //here ends scrolling icon -->
+<!--js for bootstrap working-->
+<script src="/static/js/bootstrap.js"></script>
+<!-- //for bootstrap working -->
+<!-- script-for-menu -->
+<script>
+		$("span.menu").click(function(){
+			$(".top-nav ul").slideToggle("slow" , function(){
+			});
+		});
+	</script>
+<!-- script-for-menu -->
+<script>
+
+    console.log({{ state }})
+     temp = document.getElementById('login')
+    if {{ state }} =='未登录'{
+        <!--console.log(state)-->
+         temp.innerHTML ='<a href=r"{% url 'food:register' %}" class=" menu__link" >登录/注册</a>'
+         }
+    else
+    {
+    <!--console.log(state)-->
+    temp.innerHTML ='<a href=r"{% url 'food:logout' %}" class=" menu__link" >{{ state }}/退出</a>'
+    }
+</script>
+</body>
+</html>

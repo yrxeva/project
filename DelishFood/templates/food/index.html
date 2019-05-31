@@ -1,0 +1,165 @@
+{% extends 'food/base.html' %}
+{% block title %}
+首页
+{% endblock %}
+
+{% block log %}
+{{ state }}
+{% endblock %}
+
+{% block down %}
+
+<!--blogs-->
+<div class="agile-blogs" id="blogs">
+	<div class="container">
+	<h3 class="tittle-w3"><span>热门 </span>食谱</h3>
+		<div class="g1 agile-blog1">
+			<a href="#"><img src="/static/images/bl1.jpg" alt="blog1"></a>
+				<div class="text-w3">
+					<h3 class="tittle-w3 sub-head"><span>红烧肉</span></h3>
+					<p class="para-w3l">
+						烧红烧肉时要加糖，糖除了调味外，还会增加香味和色泽，
+						有很多高手烧的红烧肉味道很好，除其他佐料外，关键是他们加糖的量、
+						火候处理得当，产生的美拉德反应产物好，无意中成了美拉德反应的高手。
+					</p>
+					<a class="read b1" href="{% url 'food:single' %}">更多</a>
+				</div>
+				<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+<!--//blogs-->
+
+<!--services-section-->
+<div class="services-w3layouts" id="services">
+<!-- //Stats -->
+	<!--热门菜单blog-->
+	<div class="col-md-6 agitsworkw3ls-grid ">
+	<h3 class="tittle-w3"><span>Always</span> fresh <span>& </span>delicious <span>food</span></h3>
+	<p class="para-w3l">Gourmet是一家提供全方位服务的餐饮和活动策划公司，我们提供各种菜单和设计选择，致力于为您提供精致的美食和一流的客户服务。</p>
+	<div class="services-left-w3-agile">
+		<h3 class="tittle-w3 sub-head">菜单</h3>
+		<ul>
+			<li><i class="fa fa-check" aria-hidden="true"></i>酒水</li>
+			<li><i class="fa fa-check" aria-hidden="true"></i>下午茶</li>
+			<li><i class="fa fa-check" aria-hidden="true"></i>午餐自助餐</li>
+			<li><i class="fa fa-check" aria-hidden="true"></i>晚餐自助餐</li>
+		</ul>
+		</div>
+		<div class="services-right-w3-agile">
+		<h3 class="tittle-w3 sub-head">餐饮</h3>
+		<ul>
+			<li><i class="fa fa-check" aria-hidden="true"></i>毕业派对</li>
+			<li><i class="fa fa-check" aria-hidden="true"></i>婚礼派对</li>
+			<li><i class="fa fa-check" aria-hidden="true"></i>生日聚会</li>
+			<li><i class="fa fa-check" aria-hidden="true"></i>周年纪念日</li>
+		</ul>
+		</div>
+	</div>
+	<!--产品展示-->
+	<div class="col-md-6 agitsworkw3ls-grid-2">
+	   <div class="info-imgs">
+		 <ul>
+		  <li>
+			  <div class="gallery-grid1">
+				<img src="/static/images/s1.jpg" alt=" " class="img-responsive">
+			</div>
+		  </li>
+		   <li>
+			 <div class="gallery-grid1">
+				<img src="/static/images/s2.jpg" alt=" " class="img-responsive">
+			</div>
+		   </li>
+			<li>
+			   <div class="gallery-grid1">
+				<img src="/static/images/s3.jpg" alt=" " class="img-responsive">
+			</div>
+			</li>
+			<li>
+			  <div class="gallery-grid1">
+				<img src="/static/images/s4.jpg" alt=" " class="img-responsive">
+			</div>
+			</li>
+		 </ul>
+	   </div>
+	</div>
+	<div class="clearfix"></div>
+<!-- //Stats -->
+<div class="clearfix"></div>
+</div>
+<!--//services-section-->
+
+<!--公司信息-->
+<!-- mail -->
+<div class="mail">
+	<div class="mail-grid1">
+		<div class="container">
+			<h3 class="tittle-w3">联系 <span>信息</span></h3>
+				<div class="col-md-4 mail-agileits-w3layouts">
+					<i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>
+					<div class="contact-right">
+						<p>电话</p><span>+1 (112)250-66-88</span>
+					</div>
+				</div>
+				<div class="col-md-4 mail-agileits-w3layouts">
+					<i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>
+					<div class="contact-right">
+						<p>邮箱</p><a href="mailto:info@example.com">info@gmail.com</a>
+					</div>
+				</div>
+				<div class="col-md-4 mail-agileits-w3layouts">
+					<i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>
+					<div class="contact-right">
+						<p>地址</p><span>743 Diamonds street, Iowa, US.</span>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+</div>
+<!--gallery-->
+<script type="text/javascript">
+							$(window).load(function() {
+								$("#flexiselDemo1").flexisel({
+									visibleItems:4,
+									animationSpeed: 1000,
+									autoPlay: true,
+									autoPlaySpeed: 3000,
+									pauseOnHover: true,
+									enableResponsiveBreakpoints: true,
+									responsiveBreakpoints: {
+										portrait: {
+											changePoint:480,
+											visibleItems: 1
+										},
+										landscape: {
+											changePoint:640,
+											visibleItems:2
+										},
+										tablet: {
+											changePoint:768,
+											visibleItems: 3
+										}
+									}
+								});
+
+							});
+					</script>
+<script type="text/javascript" src="/static/js/jquery.flexisel.js"></script>
+<!--gallery-->
+<!-- Calendar -->
+<link rel="stylesheet" href="/static/css/jquery-ui.css" />
+<script src="/static/js/jquery-ui.js"></script>
+<script>
+	  $(function() {
+		$( "#datepicker,#datepicker1,#datepicker2,#datepicker3" ).datepicker();
+	  });
+</script>
+<!-- //Calendar -->
+
+
+
+
+{% endblock %}
+
+

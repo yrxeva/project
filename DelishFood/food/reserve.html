@@ -1,0 +1,62 @@
+{% extends 'food/base.html' %}
+{% block title %}
+预定
+{% endblock %}
+
+
+{% block up %}
+
+{% endblock %}
+{% block down %}
+<div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">预定</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">历史订单</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+    <!--订购-->
+    <!-- banner-text -->
+    <div class="banner-text">
+        <!--<h2>物美价廉的食物，欢迎品尝!</h2>-->
+        <div class="book-form">
+        <p>Reserve a table.</p>
+           <form action="{% url 'food:reserve' %}" method="post">
+                <div class="col-md-3 form-date-w3-agileits">
+                    <label><i class="fa fa-calendar" aria-hidden="true"></i> 时间 :</label>
+                        <input  id="datepicker0" name="time1" type="text" value="HH:MM" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'HH:MM';}" required="">
+                    </div>
+                <div class="col-md-3 form-date-w3-agileits">
+                    <label><i class="fa fa-calendar" aria-hidden="true"></i> 日期 :</label>
+                        <input  id="datepicker1" name="date1" type="text" value="mm/dd/yyyy" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'mm/dd/yyyy';}" required="">
+                    </div>
+                <div class="col-md-3 form-left-agileits-w3layouts ">
+                        <label><i class="fa fa-users" aria-hidden="true"></i> 人数 :</label>
+                        <select class="form-control" name="select1">
+                            <option></option>
+                            <option>1 人</option>
+                            <option>2 人</option>
+                            <option>3 人</option>
+                            <option>4 人</option>
+                            <option>5 人</option>
+                            <option>更多</option>
+                        </select>
+                </div>
+                <div class="col-md-3 form-left-agileits-submit">
+                      <input type="submit" value="预定座位">
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="profile">
+        <h3>历史订单</h3>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
