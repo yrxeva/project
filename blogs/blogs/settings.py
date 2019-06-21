@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'comments',
+    'haystack',
+    # 需要使用到第三方的静态资源 必须注册应用注册富文本模块
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'blogs.mymiddleware.Mymiddleware',#自定义中间件
+
 ]
 
 ROOT_URLCONF = 'blogs.urls'
@@ -121,3 +126,50 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
+HAYSTACK_CONNECTIONS = {
+    'default': {
+    'ENGINE': 'blog.whoosh_cn_backend.WhooshEngine',
+    'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+}
+}
+# 配置搜索结果分页
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+# 配置索引实时更新
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# 设置缓存
+CACHES = {
+"default": {
+"BACKEND": "redis_cache.cache.RedisCache",
+"LOCATION": "localhost:6379",   #redis端口号
+'TIMEOUT': 60,
+},
+}
+
+# 配置tinymce
+TINYMCE_DEFAULT_CONFIG = {
+    'theme':'advanced',
+    'width':600,
+    'height':400,
+}
+
+# # 邮箱配置
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS = True #是否使用TLS安全传输协议(用于在两个通信应用程序之间提供保密性和数据完整性。)
+# EMAIL_USE_SSL = False #是否使用SSL加密，qq企业邮箱要求使用
+# EMAIL_HOST = ' smtp.126.com ' #发送邮件的邮箱 的 SMTP服务器，这里用了163邮箱
+# EMAIL_PORT = 25 #发件箱的SMTP服务器端口
+# EMAIL_HOST_USER = 'yrx13598422119@126.com' #发送邮件的邮箱地址
+# EMAIL_HOST_PASSWORD = 'yrx13037629896' #密码
+# DEFAULT_FROM_EMAIL = '杨如鑫 <yrx13598422119@126.com>'    #用于显示
+
+# 邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True #是否使用TLS安全传输协议(用于在两个通信应用程序之间提供保密性和数据完整性。
+EMAIL_USE_SSL = False #是否使用SSL加密，qq企业邮箱要求使用
+EMAIL_HOST = 'smtp.163.com' #发送邮件的邮箱 的 SMTP服务器，这里用了163邮箱
+EMAIL_PORT = 25 #发件箱的SMTP服务器端口
+EMAIL_HOST_USER = 'yrxeva@163.com' #发送邮件的邮箱地址
+EMAIL_HOST_PASSWORD = 'ma123456789'
+DEFAULT_FROM_EMAIL = 'xyz <yrxeva@163.com>'
+# 图片配置
+MEDIA_ROOT=os.path.join(BASE_DIR,"static/media")

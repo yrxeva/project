@@ -11,7 +11,6 @@ def index(request):
     else:
         print('mn')
         return render(request,'food/index.html',{'state':'未登录'})
-
 def single(request):
     if request.session.get('username'):
         return render(request,'food/single.html',{'state':'退出'})

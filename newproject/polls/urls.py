@@ -8,6 +8,9 @@ urlpatterns = [
     url(r'^index/$',views.index,name='index'),
     url(r'^detail/(\d+)/$',views.detail,name='detail'),
     url(r'^result/(\d+)/$',views.result,name='result'),
+    url(r'^active/(.*?)/$',views.active,name='active'),
+    url(r'^verify/$',views.verify,name='verify'),
+    url(r'^checkuser/$',views.checkuser,name='checkuser'),
 
 
 ]

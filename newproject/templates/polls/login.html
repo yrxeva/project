@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+
 <div class="container">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
@@ -28,7 +29,7 @@
         <form class="form-horizontal" action="{% url 'polls:login' %}" method="post">
         {% csrf_token %}
           <div class="form-group">
-            <label for="username" class="col-sm-2 control-label">登录</label>
+            <label for="username" class="col-sm-2 control-label">用户名</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" name="username" id="username" placeholder="输入账号">
             </div>
@@ -40,22 +41,68 @@
             </div>
           </div>
           <div class="form-group">
+                    <label for="verify" class="col-sm-2 control-label">验证码：</label>
+                    <div class="col-sm-2">
+                        <img src="{% url 'polls:verify' %}" alt="" width="100" height="35">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" name="verify" class="form-control" id="verify" placeholder="请输入验证码">
+                    </div>
+                </div>
+          <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10" align="center">
-              <button type="submit" class="btn btn-default" >登录</button>
+              <button type="submit" class="btn btn-default" >登录</button>{{ error }}
+                <div id="info">null</div>
             </div>
           </div>
         </form>
+        {# 使用ajax进行异步刷新,判断用户名是否存在 #}
+        <script>
+            <!--console.log($);-->
+            $(function(){
+                <!--$("#convertdata").click(function(){-->
+                $("#username").blur(function(){
+                    $.ajax({
+                        url:"/polls/checkuser/",
+                        type:"post",
+                        data:{"username": $("#username").val(),
+                         "csrfmiddlewaretoken": '{{ csrf_token }}'
+                         },
+                        success: function(data){
+                            <!--console.log(data.state)-->
+                            if(data.state)
+                            {
+                            $("#info").text("")
+                            }
+                            else
+                            {
+                            $("#info").text(data.error)
+                            }
+                        }
+                    })
+                })
+            })
+        </script>
+
+
 
     </div>
     <div role="tabpanel" class="tab-pane" id="register">
 
         <form class="form-horizontal" action="{% url 'polls:register' %}" method="post">
           <div class="form-group">
-            <label for="username" class="col-sm-2 control-label">注册</label>
+            <label for="username" class="col-sm-2 control-label">用户名</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" name="username_reg" id="username_reg" placeholder="输入账号">
             </div>
           </div>
+          <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label">输入邮箱：</label>
+                    <div class="col-sm-10">
+                        <input type="email" name="email" class="form-control" id="email"
+                               placeholder="请输入邮箱">
+                    </div>
+                </div>
           <div class="form-group">
             <label for="inputPassword3_reg" class="col-sm-2 control-label">密码</label>
             <div class="col-sm-10">
@@ -70,7 +117,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10" align="center">
-              <button type="submit" class="btn btn-default" >注册</button>
+              <button type="submit" class="btn btn-default" >注册</button>{{ error }}
             </div>
           </div>
         </form>

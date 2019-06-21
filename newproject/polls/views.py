@@ -1,51 +1,37 @@
 from django.shortcuts import render,redirect,reverse,get_object_or_404
+from django.http import HttpResponse,HttpResponseRedirect,JsonResponse
 from .models import Question,Choice,MyUser
-from django.http import HttpResponse,HttpResponseRedirect
-from django.views.generic import View
 from .util import checklogin
-# 登录授权，登录，登出
+from django.views.generic import View
 from django.contrib.auth import authenticate,login as lgi,logout as lgo
+# from .forms import LoginForm,RegisterForm
+from django.core.mail import send_mail,EmailMultiAlternatives
+from django.conf import settings
+from PIL import Image,ImageDraw,ImageFont
+import random,io
+from django.core.cache import cache
+# 引入序列化加密并且有效期信息
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer,SignatureExpired
 # Create your views here.
 
-# class Login(View):
-#     def get(self,request):
-#         return render(request,'polls/login.html')
-#     def post(self,request):
-#         username= request.POST.get('username')
-#         if username == 'abc':
-#             # 登录成功后，应将用户信息保存到cookie
-#             res = redirect(reverse('polls:index'))
-#             res.set_cookie('username',username)
-#             return res
-#         else:
-#             return render(request,'polls/login.html',{'error':'用户名错误'})
-
 def login(request):
-    # 没有引入数据库
-    # if request.method=='GET':
-    #     return render(request, 'polls/login.html')
-    # else:
-    #     username = request.POST.get('username')
-    #     if username == 'abc':
-    #         # 登录成功后，应将用户信息保存到cookie
-    #         res = redirect(reverse('polls:index'))
-    #         # cookie缓存
-    #         # res.set_cookie('username',username)
-    #         # session缓存
-    #         request.session['username'] = username
-    #         return res
-    #     else:
-    #         return render(request,'polls/login.html',{'error':'用户名错误'})
-
-    # 使用数据库存取数据
     if request.method == 'GET':
         return render(request, 'polls/login.html')
     else:
         username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request,username=username,password=password)
-        lgi(request,user)
-        return redirect(reverse('polls:index'))
+        pwd = request.POST.get('password')
+        user = get_object_or_404(MyUser,username=username)
+        print('active:',user.is_active)
+        if not user.is_active:
+            return render(request,'polls/login.html',{'error':'用户尚未激活'})
+        else:
+            check = user.check_password(pwd)
+            if check:
+                lgi(request,user)
+                return redirect(reverse('polls:index'))
+            else:
+                return render(request,'polls/login.html',{'error':'用户名或密码错误'})
+
 
 def logout(request):
     # res = redirect(reverse('polls:login'))
@@ -63,16 +49,100 @@ def register(request):
         username = request.POST.get('username_reg')
         password = request.POST.get('inputPassword3_reg')
         password2 = request.POST.get('inputPassword3_reg2')
+        email = request.POST.get('email')
         error = None
         if password != password2:
             error = '两次输入密码不一致'
-            print('cuowu:', error)
             return render(request,'polls/login.html',{'error':error})
         else:
-            MyUser.objects.create_user(username=username,password=password
-                                       ,url='http:google.com')
-            return redirect(reverse('polls:login'))
+            user = MyUser.objects.create_user(username=username,password=password,url = 'http://laji.com')
+            # 设置账号为非激活状态，使用邮箱激活
+            user.is_active=0
+            user.save()
+            # 加密用户id信息，防止非人为激活
+            #1得到序列化工具
+            # settings.SECRET_KEY为每一个django项目提供的一个密钥
+            # Serializer的参数为密钥和过期时间，默认1小时，单位秒，序列化和反序列化密钥时间都要一致
+            serutil = Serializer(settings.SECRET_KEY,3600)
+            # 2使用工具对字典进行对象序列化
+            result = serutil.dumps({'userid':user.id}).decode('utf-8')
+            print('result:', result, type(result))
 
+            url = "http:127.0.0.1:8000/polls/active/%s"%(result)
+            mail = EmailMultiAlternatives("点击激活","<a href='http:127.0.0.1:8000/polls/active/%s'>点击激活</a><p>手动点击链接%s</p>"%(result,url),
+            settings.DEFAULT_FROM_EMAIL, [email])
+            mail.content_subtype='html'
+            mail.send()
+            return render(request,'polls/login.html',{"error":"请在一个小时内激活"})
+def active(request,info):
+    serutil = Serializer(settings.SECRET_KEY, 3600)
+    # 检查过期时间
+    try:
+        # 反序列化
+        obj = serutil.loads(info)
+        print('obj:',obj['userid'])
+        id = obj['userid']
+        user= get_object_or_404(MyUser,pk=id)
+        user.is_active = 1
+        user.save()
+        return redirect(reverse('polls:login'))
+    except SignatureExpired as e:   #itsdnagrous自带错误函数
+        return HttpResponse('已过期')
+
+# 验证码
+def verify(request):
+    # 每次请求验证码，都要使用pillow构造出图像，返回
+    # 定义变量，用于画面的背景色，宽高
+    bgcolor = (random.randrange(20,100),
+               random.randrange(20,100),
+               random.randrange(20,100),)
+    width = 100
+    heigth = 35
+    # 创建画面对象
+    im = Image.new('RGB',(width,heigth),bgcolor)
+    # 创建画笔对象
+    draw = ImageDraw.Draw(im)
+    # 使用画笔的point()函数绘制噪点
+    for i in range(0,500):
+        # 随机位置
+        xy = (random.randrange(0,width),
+              random.randrange(0,heigth))
+        # 随机颜色
+        fill = (random.randrange(0,255),255,random.randrange(0,255))
+        # 填充
+        draw.point(xy,fill=fill)
+    # 验证码内容
+    str1 = 'ABCD123EFGHIJK456LMNOPQRS789TUVWXYZ0'
+    rand_str = ''
+    for i in range(0,4):
+        rand_str += str1[random.randrange(0,len(str1))]
+    print(rand_str)
+    # 构造字体对象
+    font = ImageFont.truetype('cambriab.ttf',23)
+    fontcolor = (255,random.randrange(0,255),
+                 random.randrange(0,255))
+    # 绘制字体
+    draw.text((5,2),rand_str[0],font=font,fill=fontcolor)
+    draw.text((25, 2), rand_str[1], font=font, fill=fontcolor)
+    draw.text((50, 2), rand_str[2], font=font, fill=fontcolor)
+    draw.text((75, 2), rand_str[3], font=font, fill=fontcolor)
+    # 释放画笔
+    del draw
+
+    cache.set('verifycode',rand_str,500)
+    f = io.BytesIO()
+    im.save(f,'png')
+    return HttpResponse(f.getvalue(),'image/png')
+
+# ajax异步刷新
+def checkuser(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        print(username)
+        if MyUser.objects.filter(username = username).first():
+            return JsonResponse({"state":1})
+        else:
+            return JsonResponse({"state":0, "error":"用户不存在"})
 
 @checklogin
 def index(request):
