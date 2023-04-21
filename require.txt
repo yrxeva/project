@@ -11,5 +11,5 @@ python-redis-lock==3.3.1
 pytz==2019.1
 redis==3.2.1
 redis-structures==0.1.7
-sqlparse==0.3.0
+sqlparse==0.4.4
 Whoosh==2.7.4
